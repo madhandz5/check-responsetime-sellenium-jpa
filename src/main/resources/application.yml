@@ -16,11 +16,12 @@ spring:
   h2:
     console:
       enabled: true
+  profiles:
+    active: local
 
 logging:
   level:
     org:
       hibernate:
         SQL: debug
-
 

@@ -1,11 +1,24 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Selenium Check</title>
-</head>
-<body>
-<h1>Selenium</h1>
-
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments.html :: head"></head>
+<body class="bg-light">
+<div th:replace="fragments.html :: main-nav"></div>
+<section class="jumbotron text-center">
+    <div class="container">
+        <h1>TIL21</h1>
+        <p class="lead text-muted">
+            TIL21<br/>
+        </p>
+        <p>
+            <a th:href="@{/member/sign-up}" class="btn btn-primary my-2">회원 가입</a>
+        </p>
+    </div>
+</section>
+<div class="container">
+    <div class="row justify-content-center pt-3">
+    </div>
+</div>
+<div th:replace="fragments.html :: footer"></div>
+<div th:replace="fragments.html :: date-time"></div>
 </body>
 </html>
