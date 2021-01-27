@@ -30,8 +30,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .mvcMatchers(HttpMethod.POST, "/member/sign-up").permitAll()
                 .anyRequest().authenticated();
 
+        http.
+                csrf().ignoringAntMatchers("/login");
+
         http.formLogin()
-                .loginPage("/login").permitAll();
+                .loginPage("/login").permitAll()
+                .defaultSuccessUrl("/", true);
 
 
         http.logout()
