@@ -15,25 +15,32 @@ spring:
   h2:
     console:
       enabled: true
-
   mvc:
     hiddenmethod:
       filter:
         enabled: true
-  profiles:
-    active: "prod"
+  mail:
+    host: "smtp.gmail.com"
+    port: 587
+    username: "tiltwoone@gmail.com"
+    password: "umkecprmywchanes"
+    properties:
+      mail.smtp.auth: true
+      mail.smtp.timeout: 5000
+      mail.smtp.starttls.enable: true
 
 logging:
   level:
     org:
       hibernate:
         SQL: debug
+
+app:
+  host: "https://speedcheck.til21.co.kr"
+
 server:
   tomcat:
     max-http-form-post-size: 5MB
-  port: 8080
-
-app:
-  host: "http://localhost:8080"
+  port: 8888
 
 
