@@ -11,16 +11,17 @@
 <!--      <i class="fa fa-search" aria-hidden="true"></i>-->
 <!--    </button>-->
 <!--  </form>-->
-    <section class="dropcontainer pull-right">
-        <div class="dropdown">
-            <select name="sort" class="dropdown-select">
-                <option th:text="시간순" th:value="1" th:selected="${sort eq 1}"></option>
-                <option th:text="URL순" th:value="2" th:selected="${sort eq 2}"></option>
-            </select>
-        </div>
-    </section>
-    <a id="sort1" th:href="@{/check/list(sort=1)}"></a>
-    <a id="sort2" th:href="@{/check/list(sort=2)}"></a>
+
+<!--    <section class="dropcontainer pull-right">-->
+<!--        <div class="dropdown">-->
+<!--            <select name="sort" class="dropdown-select">-->
+<!--                <option th:text="시간순" th:value="1" th:selected="${sort eq 1}"></option>-->
+<!--                <option th:text="URL순" th:value="2" th:selected="${sort eq 2}"></option>-->
+<!--            </select>-->
+<!--        </div>-->
+<!--    </section>-->
+
+<!--    th:href="@{/check/list(sort=1)}"-->
 </th:block>
 
 <th:block layout:fragment="content">

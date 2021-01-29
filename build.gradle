@@ -69,7 +69,11 @@ dependencies {
     // https://mvnrepository.com/artifact/org.modelmapper/modelmapper
     compile group: 'org.modelmapper', name: 'modelmapper', version: '2.3.9'
 
+    // mysql
+    runtimeOnly 'mysql:mysql-connector-java'
 
+    // thymeleaf layout
+    compile group: 'nz.net.ultraq.thymeleaf', name: 'thymeleaf-layout-dialect', version: '2.4.1'
 }
 
 test {
