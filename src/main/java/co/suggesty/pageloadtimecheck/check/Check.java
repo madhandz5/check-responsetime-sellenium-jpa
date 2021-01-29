@@ -1,11 +1,10 @@
 package co.suggesty.pageloadtimecheck.check;
 
-import co.suggesty.pageloadtimecheck.page.Page;
+import co.suggesty.pageloadtimecheck.webpage.WebPage;
 import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Entity
 @Builder
@@ -23,7 +22,7 @@ public class Check {
 
     @ManyToOne
     @JoinColumn(name = "page_id")
-    private Page pages;
+    private WebPage webPage;
 
     @Column(name = "loading_time")
     private int time;

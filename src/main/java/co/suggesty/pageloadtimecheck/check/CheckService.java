@@ -1,11 +1,14 @@
 package co.suggesty.pageloadtimecheck.check;
 
-import co.suggesty.pageloadtimecheck.page.Page;
-import co.suggesty.pageloadtimecheck.page.PageRepository;
+import co.suggesty.pageloadtimecheck.webpage.WebPage;
+import co.suggesty.pageloadtimecheck.webpage.WebPageRepository;
 import lombok.RequiredArgsConstructor;
+import org.openqa.selenium.PageLoadStrategy;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -15,46 +18,48 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CheckService {
 
-    private final PageRepository pageRepository;
+    private final WebPageRepository webPageRepository;
     private final CheckRepository checkRepository;
 
-    public void test() {
-        //        System Property Setup
-        System.setProperty("webdriver.chrome.driver", "/Users/ryan/Documents/chromedriver");
-//        Driver Setup
+    public void timeChecking() {
+        // System Property Setup
+        System.setProperty("webdriver.chrome.driver", "/opt/WebDriver/bin/chromedriver");
+        // Driver Setup
         ChromeOptions options = new ChromeOptions();
-        //    Web Driver Setting
+        options.setPageLoadStrategy(PageLoadStrategy.NORMAL);
+        // Web Driver Setting
         WebDriver driver = new ChromeDriver(options);
-//      WebElement element;
-        List<Page> checkPages = pageRepository.findAll();
+        // WebElement element;
+        List<WebPage> checkPages = webPageRepository.findAll();
 
+        try {
+            for (WebPage checkPage : checkPages) {
+                System.out.println("checkPage.getPageName() = " + checkPage.getPageName());
 
-        int index = 0;
-        for (Page checkPage : checkPages) {
-            System.out.println("checkPage.getPage_name() = " + checkPage.getPage_name());
+                int start = (int) System.currentTimeMillis();
+                driver.get("https://" + checkPage.getPageName());
+                int finish = (int) System.currentTimeMillis();
+                int loadingTime = finish - start;
 
+                System.out.println("=================================");
+                System.out.println("loadingTime = " + loadingTime);
+                System.out.println("=================================");
+                saveResult(checkPage, loadingTime);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            driver.quit();
         }
-//        try {
-//            int start = (int) System.currentTimeMillis();
-//            driver.get();
-//            int finish = (int) System.currentTimeMillis();
-//            int loadingTime = finish - start;
-//            System.out.println("=================================");
-//            System.out.println("start = " + loadingTime);
-//            System.out.println("=================================");
-//            saveResult(checkPages.get(index++), loadingTime);
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        } finally {
-//            driver.close();
-//        }
-
     }
 
-    private void saveResult(Page page, int loadingTime) {
-        Check check = Check.builder().checkedAt(LocalDateTime.now()).time(loadingTime).pages(page)
+    private void saveResult(WebPage webPage, int loadingTime) {
+        Check check = Check.builder().checkedAt(LocalDateTime.now()).time(loadingTime).webPage(webPage)
                 .build();
         checkRepository.save(check);
+    }
+
+    public Page<Check> getCheckList(Pageable pageable) {
+        return checkRepository.findAll(pageable);
     }
 }

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="page/layout/basic">
+<th:block layout:fragment="title">
+    <title>This page is a list page</title>
+</th:block>
+
+<th:block layout:fragment="search">
+<!--  <form action="#" id="searchform-header" class="searchform js__toggle active pull-right">-->
+<!--    <input type="search" placeholder="Search..." class="input-search">-->
+<!--    <button class="mdi mdi-magnify button-search" type="submit">-->
+<!--      <i class="fa fa-search" aria-hidden="true"></i>-->
+<!--    </button>-->
+<!--  </form>-->
+    <section class="dropcontainer pull-right">
+        <div class="dropdown">
+            <select name="sort" class="dropdown-select">
+                <option th:text="시간순" th:value="1" th:selected="${sort eq 1}"></option>
+                <option th:text="URL순" th:value="2" th:selected="${sort eq 2}"></option>
+            </select>
+        </div>
+    </section>
+    <a id="sort1" th:href="@{/check/list(sort=1)}"></a>
+    <a id="sort2" th:href="@{/check/list(sort=2)}"></a>
+</th:block>
+
+<th:block layout:fragment="content">
+    <div class="table-responsive clearfix">
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <!--        <th>번호</th>-->
+                <!--        <th>제목</th>-->
+                <!--        <th>작성자</th>-->
+                <!--        <th>등록일</th>-->
+                <!--        <th>조회 수</th>-->
+                <th>URL</th>
+                <th>소요시간(ms)</th>
+                <th>확인시점</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:if="${not #lists.isEmpty( checkList )}" th:each="check : ${checkList}">
+                <!--        <td scope="check" th:text="${#strings.equals( check.noticeYn, 'Y' ) ? '공지' : check.idx}"></td>-->
+                <!--        <td class="text-left">-->
+                <!--          <a th:href="@{/board/view.do( idx=${check.idx} )}" th:text="${check.title}"></a>-->
+                <!--        </td>-->
+                <!--        <td th:text="${check.writer}"></td>-->
+                <!--        <td th:text="${#temporals.format( check.insertTime, 'yyyy-MM-dd' )}"></td>-->
+                <!--        <td th:text="${check.viewCnt}"></td>-->
+                <td th:text="${check.webPage.pageName}"></td>
+                <td th:text="${check.time}"></td>
+                <td th:text="${#temporals.format(check.checkedAt, 'yyyy-MM-dd HH:mm:ss')}">
+            </tr>
+            <tr th:unless="${not #lists.isEmpty( checkList )}">
+                <td colspan="5">조회된 결과가 없습니다.</td>
+            </tr>
+            </tbody>
+        </table>
+
+<!--            <div class="btn_wrap text-right">-->
+<!--              <a th:href="@{/board/write.do}" class="btn btn-primary waves-effect waves-light">Write</a>-->
+<!--            </div>-->
+
+        <th:block layout:fragment="paging">
+            <nav aria-label="Page navigation" class="text-center">
+                <ul class="pagination">
+                    <li th:classappend="${1 == checkList.pageable.pageNumber + 1} ? 'disabled'">
+                        <a th:href="@{/check/list(page=${checkList.pageable.pageNumber - 1})}" aria-label="Previous">
+                            <span aria-hidden="true">&lt;</span>
+                        </a>
+                    </li>
+
+                    <th:block th:each="i : ${#numbers.sequence(startPage, endPage)}">
+                        <li th:classappend="${i == checkList.pageable.pageNumber + 1} ? 'disabled'">
+                            <a th:href="@{/check/list(page=${i - 1})}" th:text="${i}"></a>
+                        </li>
+                    </th:block>
+
+                    <li th:classappend="${checkList.totalPages == checkList.pageable.pageNumber + 1} ? 'disabled'">
+                        <a th:href="@{/check/list(page=${checkList.pageable.pageNumber + 1})}" aria-label="Next">
+                            <span aria-hidden="true">&gt;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </th:block>
+    </div>
+</th:block>
+</html>
