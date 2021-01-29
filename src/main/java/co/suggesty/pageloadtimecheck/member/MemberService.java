@@ -68,7 +68,7 @@ public class MemberService implements UserDetailsService {
                 "&email=" + newMember.getEmail());
         context.setVariable("name", newMember.getName());
         context.setVariable("linkName", "이메일 인증하기");
-        context.setVariable("message", "TIL21이 제공하는 서비스를 사용하려면 이메일을 인증해야 합니.");
+        context.setVariable("message", "TIL21이 제공하는 서비스를 사용하려면 이메일을 인증해야 합니다.");
         context.setVariable("host", appProperties.getHost());
         String message = templateEngine.process("mail/confirm-mail", context);
 
