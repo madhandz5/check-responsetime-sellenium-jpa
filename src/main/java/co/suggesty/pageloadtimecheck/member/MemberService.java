@@ -1,5 +1,8 @@
 package co.suggesty.pageloadtimecheck.member;
 
+import co.suggesty.pageloadtimecheck.config.AppProperties;
+import co.suggesty.pageloadtimecheck.mail.EmailMessage;
+import co.suggesty.pageloadtimecheck.mail.EmailService;
 import co.suggesty.pageloadtimecheck.member.form.SignUpForm;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,6 +17,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
 
 import java.util.List;
 
@@ -24,8 +29,10 @@ import java.util.List;
 public class MemberService implements UserDetailsService {
 
     private final MemberRepository memberRepository;
-    private final JavaMailSender javaMailSender;
     private final PasswordEncoder passwordEncoder;
+    private final AppProperties appProperties;
+    private final TemplateEngine templateEngine;
+    private final EmailService emailService;
 
     @Transactional
     public Member processNewAccount(SignUpForm signUpForm) {
@@ -38,9 +45,9 @@ public class MemberService implements UserDetailsService {
     private Member saveNewMember(SignUpForm signUpForm) {
 
         CompanyName company = null;
-        if(signUpForm.getEmail().contains("fromzero")){
+        if (signUpForm.getEmail().contains("fromzero")) {
             company = CompanyName.TIL21;
-        }else if(signUpForm.getEmail().contains("leenhan")){
+        } else if (signUpForm.getEmail().contains("leenhan")) {
             company = CompanyName.LEENHAN;
         }
 
@@ -56,12 +63,22 @@ public class MemberService implements UserDetailsService {
     }
 
     public void sendSignUpConfirmEmail(Member newMember) {
-        SimpleMailMessage mailMessage = new SimpleMailMessage();
-        mailMessage.setTo(newMember.getEmail());
-        mailMessage.setSubject("[TIL21] 가입을 위한 이메일을 확인해주세요.");
-        mailMessage.setText("/member/check-email-token?token=" + newMember.getEmailCheckToken() + "&email=" + newMember.getEmail());
+        Context context = new Context();
+        context.setVariable("link", "/member/check-email-token?token=" + newMember.getEmailCheckToken() +
+                "&email=" + newMember.getEmail());
+        context.setVariable("name", newMember.getName());
+        context.setVariable("linkName", "이메일 인증하기");
+        context.setVariable("message", "TIL21이 제공하는 서비스를 사용하려면 이메일을 인증해야 합니.");
+        context.setVariable("host", appProperties.getHost());
+        String message = templateEngine.process("mail/confirm-mail", context);
 
-        javaMailSender.send(mailMessage);
+        EmailMessage emailMessage = EmailMessage.builder()
+                .to(newMember.getEmail())
+                .subject("[TIL21] Page Response Time Check - 이메일을 인증해주세요.")
+                .message(message)
+                .build();
+
+        emailService.sendEmail(emailMessage);
     }
 
     public void login(Member member) {
