@@ -27,6 +27,9 @@ public class CheckService {
         // Driver Setup
         ChromeOptions options = new ChromeOptions();
         options.setPageLoadStrategy(PageLoadStrategy.NORMAL);
+        options.addArguments("--headless");
+        options.addArguments("--no-sandbox");
+        options.addArguments("--disable-dev-shm-usage");
         // Web Driver Setting
         WebDriver driver = new ChromeDriver(options);
         // WebElement element;

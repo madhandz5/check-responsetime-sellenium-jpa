@@ -12,13 +12,16 @@ spring:
       hibernate:
         format_sql:true
     database-platform: org.hibernate.dialect.H2Dialect
+
   h2:
     console:
       enabled: true
+
   mvc:
     hiddenmethod:
       filter:
         enabled: true
+
   mail:
     host: "smtp.gmail.com"
     port: 587
@@ -28,11 +31,13 @@ spring:
       mail.smtp.auth: true
       mail.smtp.timeout: 5000
       mail.smtp.starttls.enable: true
+
 logging:
   level:
     org:
       hibernate:
         SQL: debug
+
 app:
   host: "http://localhost:8080"
 
@@ -40,4 +45,3 @@ server:
   tomcat:
     max-http-form-post-size: 5MB
   port: 8080
-
