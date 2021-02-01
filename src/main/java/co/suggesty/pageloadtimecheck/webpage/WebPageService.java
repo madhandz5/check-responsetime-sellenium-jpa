@@ -8,11 +8,17 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class WebPageService {
     private final WebPageRepository webPageRepository;
+
+    public WebPage getPage(Long id) {
+        WebPage webPage = webPageRepository.findById(id).get();
+        return webPage;
+    }
 
     public List<WebPage> getPages() {
         List<WebPage> pageList = webPageRepository.findAll();
@@ -20,7 +26,6 @@ public class WebPageService {
     }
 
     public void insertPage(String pageName) {
-
         // check url
         int responseCode = 0;
         try {

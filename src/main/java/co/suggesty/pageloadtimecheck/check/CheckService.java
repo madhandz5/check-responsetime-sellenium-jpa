@@ -65,4 +65,8 @@ public class CheckService {
     public Page<Check> getCheckList(Pageable pageable) {
         return checkRepository.findAll(pageable);
     }
+
+    public void removeCheck(WebPage webPage) {
+        checkRepository.deleteByWebPage(webPage);
+    }
 }

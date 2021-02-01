@@ -19,6 +19,11 @@ spring:
     hiddenmethod:
       filter:
         enabled: true
+    contentnegotiation:
+      favor-parameter: true
+      media-types:
+        xlsx: application/vnd.ms-excel
+
 
   mail:
     host: "smtp.gmail.com"

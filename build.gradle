@@ -74,6 +74,9 @@ dependencies {
 
     // thymeleaf layout
     compile group: 'nz.net.ultraq.thymeleaf', name: 'thymeleaf-layout-dialect', version: '2.4.1'
+
+    // poi (ooxml : xlsx)
+    compile group: 'org.apache.poi', name: 'poi-ooxml', version: '4.1.2'
 }
 
 test {

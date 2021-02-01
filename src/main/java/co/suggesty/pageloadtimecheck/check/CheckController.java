@@ -1,24 +1,22 @@
 package co.suggesty.pageloadtimecheck.check;
 
-import co.suggesty.pageloadtimecheck.webpage.WebPageService;
-import co.suggesty.pageloadtimecheck.webpage.WebPage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.web.PageableDefault;
-import org.springframework.data.web.SortDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.List;
+
 @Controller
 @RequiredArgsConstructor
 public class CheckController {
     private final CheckService checkService;
-    private final WebPageService webPageService;
+    private final CheckRepository checkRepository;
 
     @GetMapping(value = "/check/all")
     public String checkResponse(Model model) {
@@ -58,5 +56,12 @@ public class CheckController {
         model.addAttribute("endPage", blockEnd);
 
         return "page/list";
+    }
+
+    @GetMapping(value = "/check/download", produces = "application/vnd.ms-excel")
+    public String downloadList(Model model) {
+        List<Check> xlsxCheckList = checkRepository.findAll();
+        model.addAttribute("xlsxCheckList", xlsxCheckList);
+        return "xlsxForm";
     }
 }
