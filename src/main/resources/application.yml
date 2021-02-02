@@ -1,6 +1,5 @@
 spring:
   profiles:
-    active: "local"
-#    dev, prod 동일
-#    active: "dev"
+#    active: "local"
+    active: "dev"
 #    active: "prod"

@@ -1,39 +1,47 @@
 package co.suggesty.pageloadtimecheck.webpage;
 
+import co.suggesty.pageloadtimecheck.check.Check;
 import co.suggesty.pageloadtimecheck.check.CheckService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
+@Controller
 @RequiredArgsConstructor
 public class WebPageController {
     private final WebPageService webPageService;
     private final CheckService checkService;
 
-    @GetMapping(value = "/page/save/{pageName}")
-    public void insertPage(@PathVariable("pageName") String pageName){
-        webPageService.insertPage(pageName);
+    @GetMapping(value = "/page/save")
+    public String insertPage(){
+        return "page/save";
+    }
+
+    @PostMapping (value = "/page/save")
+    public String insertPage(@RequestParam String url){
+        webPageService.insertPage(url);
+        return "redirect:/page/list";
     }
 
     @GetMapping(value = "/page/remove/{id}")
-    public void removePage(@PathVariable("id") Long id){
+    public String removePage(@PathVariable("id") Long id){
         WebPage webPage = webPageService.getPage(id);
         checkService.removeCheck(webPage);
         webPageService.removePage(id);
+        return "redirect:/page/list";
     }
 
     @GetMapping(value = "/page/list")
-    public StringBuilder listupPage(Model model) {
+    public String listupPage(Model model) {
         List<WebPage> urlList = webPageService.getPages();
-        StringBuilder result = new StringBuilder();
-
-        for (WebPage url: urlList) {
-            result.append("<p>id: " + url.getId() + " / url: " + url.getPageName() + "<p>");
-            result.append("<br>");
-        }
-        return result;
+        model.addAttribute("urlList", urlList);
+        return "page/pageList";
     }
 }

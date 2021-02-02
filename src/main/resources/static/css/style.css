@@ -1185,7 +1185,8 @@ Version 1.0
 }
 .searchform .input-search {
   border: none;
-  width: 190px;
+  /*width: 190px;*/
+  width: 690px;
   height: 34px;
   padding: 7px 40px 7px 20px;
   font-size: 13px;

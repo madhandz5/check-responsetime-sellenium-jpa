@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="page/layout/basic">
+<th:block layout:fragment="title">
+    <title>This page is a list page</title>
+</th:block>
+
+<th:block layout:fragment="search">
+      <form th:action="@{/page/save}" method="post" id="searchform-header" class="searchform js__toggle active pull-left">
+        <input id="url" name="url" type="search" placeholder="Save URL ..." class="input-search">
+        <button class="mdi mdi-magnify button-search" type="submit">
+          <i class="fa fa-search" aria-hidden="true"></i>
+        </button>
+      </form>
+</th:block>
+</html>

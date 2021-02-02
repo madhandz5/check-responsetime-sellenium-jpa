@@ -12,16 +12,14 @@
 <!--    </button>-->
 <!--  </form>-->
 
-<!--    <section class="dropcontainer pull-right">-->
-<!--        <div class="dropdown">-->
-<!--            <select name="sort" class="dropdown-select">-->
-<!--                <option th:text="시간순" th:value="1" th:selected="${sort eq 1}"></option>-->
-<!--                <option th:text="URL순" th:value="2" th:selected="${sort eq 2}"></option>-->
-<!--            </select>-->
-<!--        </div>-->
-<!--    </section>-->
-
-<!--    th:href="@{/check/list(sort=1)}"-->
+    <section class="dropcontainer pull-right">
+        <div class="dropdown">
+            <select class="dropdown-select" th:onchange="'window.location.href = \'' + @{/check/list} + '?sort=\' + this.value ' ">
+                <option th:text="시간순" th:value="1" th:selected="${sort eq 1}"></option>
+                <option th:text="URL순" th:value="2" th:selected="${sort eq 2}"></option>
+            </select>
+        </div>
+    </section>
 </th:block>
 
 <th:block layout:fragment="content">
@@ -66,19 +64,19 @@
             <nav aria-label="Page navigation" class="text-center">
                 <ul class="pagination">
                     <li th:classappend="${1 == checkList.pageable.pageNumber + 1} ? 'disabled'">
-                        <a th:href="@{/check/list(page=${checkList.pageable.pageNumber - 1})}" aria-label="Previous">
+                        <a th:href="@{/check/list(page=${checkList.pageable.pageNumber - 1}, sort=${sort})}" aria-label="Previous">
                             <span aria-hidden="true">&lt;</span>
                         </a>
                     </li>
 
                     <th:block th:each="i : ${#numbers.sequence(startPage, endPage)}">
                         <li th:classappend="${i == checkList.pageable.pageNumber + 1} ? 'disabled'">
-                            <a th:href="@{/check/list(page=${i - 1})}" th:text="${i}"></a>
+                            <a th:href="@{/check/list(page=${i - 1}, sort=${sort})}" th:text="${i}"></a>
                         </li>
                     </th:block>
 
                     <li th:classappend="${checkList.totalPages == checkList.pageable.pageNumber + 1} ? 'disabled'">
-                        <a th:href="@{/check/list(page=${checkList.pageable.pageNumber + 1})}" aria-label="Next">
+                        <a th:href="@{/check/list(page=${checkList.pageable.pageNumber + 1}, sort=${sort})}" aria-label="Next">
                             <span aria-hidden="true">&gt;</span>
                         </a>
                     </li>

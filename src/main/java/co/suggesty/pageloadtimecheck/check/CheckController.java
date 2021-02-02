@@ -55,7 +55,7 @@ public class CheckController {
         model.addAttribute("startPage", blockStart);
         model.addAttribute("endPage", blockEnd);
 
-        return "page/list";
+        return "page/checkList";
     }
 
     @GetMapping(value = "/check/download", produces = "application/vnd.ms-excel")
